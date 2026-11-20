@@ -1,0 +1,507 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREAK THE CODE | Daily Vault</title>
+
+<style>
+:root {
+  --bg: #101522;
+  --panel: #1b2435;
+  --panel2: #252f43;
+  --gold: #f3c76a;
+  --white: #f6f7fb;
+  --muted: #a6afc0;
+  --green: #65d6a0;
+  --red: #fa7777;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #27334b, var(--bg) 65%);
+  color: var(--white);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 25px 15px;
+}
+
+.container {
+  width: 100%;
+  max-width: 570px;
+}
+
+header {
+  text-align: center;
+  margin: 20px 0 30px;
+}
+
+.logo {
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 5px;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: clamp(36px, 9vw, 55px);
+  margin: 12px 0 5px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.stat {
+  background: var(--panel);
+  padding: 14px 5px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat strong {
+  display: block;
+  color: var(--gold);
+  font-size: 23px;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid #354159;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 15px;
+  box-shadow: 0 15px 40px #0003;
+}
+
+.section-title {
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.intro {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.clue {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: var(--panel2);
+  padding: 13px;
+  border-radius: 10px;
+  margin-bottom: 9px;
+}
+
+.number {
+  color: var(--gold);
+  font-size: 25px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  min-width: 90px;
+}
+
+.clue-text {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #dce2ec;
+}
+
+input {
+  width: 100%;
+  background: #111827;
+  border: 1px solid #45516a;
+  border-radius: 12px;
+  color: var(--gold);
+  font-size: 38px;
+  text-align: center;
+  letter-spacing: 15px;
+  padding: 15px;
+  outline: none;
+  margin: 12px 0;
+}
+
+input:focus {
+  border-color: var(--gold);
+}
+
+button {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+.primary {
+  background: var(--gold);
+  color: #171c28;
+}
+
+.secondary {
+  background: var(--panel2);
+  color: var(--white);
+  border: 1px solid #45516a;
+  margin-top: 10px;
+}
+
+button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.message {
+  padding: 15px;
+  margin-top: 14px;
+  border-radius: 10px;
+  display: none;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.success {
+  display: block;
+  background: #173b31;
+  border: 1px solid var(--green);
+  color: var(--green);
+}
+
+.error {
+  display: block;
+  background: #40252b;
+  border: 1px solid var(--red);
+  color: #ffb2b2;
+}
+
+.hint-box {
+  display: none;
+  background: #302c21;
+  color: #f3dca8;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  margin: 25px 0;
+  letter-spacing: 1px;
+}
+
+.hidden { display: none; }
+
+@media(max-width: 400px) {
+  .card { padding: 17px; }
+  .number { font-size: 21px; min-width: 78px; }
+  .clue-text { font-size: 12px; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">THE DAILY PUZZLE CLUB</div>
+  <h1>BREAK THE<br>CODE.</h1>
+  <div class="subtitle">ONE VAULT. FIVE CLUES. CAN YOU CRACK IT?</div>
+</header>
+
+<div class="stats">
+  <div class="stat">
+    <strong id="attempts">0</strong>
+    <span>ATTEMPTS</span>
+  </div>
+  <div class="stat">
+    <strong id="points">0</strong>
+    <span>POINTS</span>
+  </div>
+  <div class="stat">
+    <strong id="streak">0</strong>
+    <span>DAY STREAK</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-title">🔐 TODAY'S MISSION</div>
+  <h2>THE DAILY VAULT</h2>
+  <p class="intro">
+    A mysterious vault has been locked. Your mission
+    is to uncover its three-digit combination using
+    the five clues below. Every clue is exact.
+  </p>
+  <p class="intro">
+    All digits are different. Position matters.
+    Think carefully before entering your answer.
+  </p>
+</div>
+
+<div class="card">
+  <div class="section-title">📁 CLASSIFIED EVIDENCE</div>
+
+  <div class="clue">
+    <div class="number">682</div>
+    <div class="clue-text">
+      One digit is correct AND in the right position.
+    </div>
+  </div>
+
+  <div class="clue">
+    <div class="number">614</div>
+    <div class="clue-text">
+      One digit is correct but in the wrong position.
+    </div>
+  </div>
+
+  <div class="clue">
+    <div class="number">206</div>
+    <div class="clue-text">
+      Two digits are correct but BOTH are in the wrong positions.
+    </div>
+  </div>
+
+  <div class="clue">
+    <div class="number">738</div>
+    <div class="clue-text">
+      None of these digits are in the code.
+    </div>
+  </div>
+
+  <div class="clue">
+    <div class="number">780</div>
+    <div class="clue-text">
+      One digit is correct but in the wrong position.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-title">🔓 ENTER YOUR CODE</div>
+
+  <input
+    id="guess"
+    type="text"
+    inputmode="numeric"
+    maxlength="3"
+    placeholder="000"
+    autocomplete="off"
+  >
+
+  <button class="primary" id="submit" onclick="checkCode()">
+    UNLOCK THE VAULT
+  </button>
+
+  <div id="message" class="message"></div>
+
+  <button class="secondary" id="hintButton" onclick="showHint()">
+    💡 REVEAL A HINT
+  </button>
+
+  <div id="hint" class="hint-box">
+    Start with clue 738. Eliminate those digits completely.
+    Then compare clues 780 and 206 to narrow down the
+    remaining possibilities.
+  </div>
+
+  <button class="secondary" onclick="resetGame()">
+    RESET ATTEMPTS
+  </button>
+</div>
+
+<div class="footer">
+  THINK SMART. STAY CURIOUS. BREAK THE CODE.
+  <br><br>
+  NEW CHALLENGE EVERY DAY.
+</div>
+
+</div>
+
+<script>
+const ANSWER = "042";
+const TODAY = new Date().toLocaleDateString("en-CA");
+
+let attempts = 0;
+let solved = false;
+
+function loadStats() {
+  let saved = JSON.parse(
+    localStorage.getItem("btc_stats") || "{}"
+  );
+
+  if (saved.date !== TODAY) {
+    if (saved.lastDate) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayKey = yesterday.toLocaleDateString("en-CA");
+
+      saved.streak = saved.lastDate === yesterdayKey
+        ? (saved.streak || 0)
+        : 0;
+    }
+
+    saved.date = TODAY;
+    saved.attempts = 0;
+    saved.solved = false;
+  }
+
+  attempts = saved.attempts || 0;
+  solved = saved.solved || false;
+
+  document.getElementById("attempts").textContent = attempts;
+  document.getElementById("points").textContent = saved.points || 0;
+  document.getElementById("streak").textContent = saved.streak || 0;
+
+  if (solved) {
+    document.getElementById("guess").disabled = true;
+    document.getElementById("submit").disabled = true;
+    showMessage("🏆 THE VAULT IS ALREADY UNLOCKED! Come back tomorrow.", true);
+  }
+}
+
+function saveStats() {
+  let saved = JSON.parse(
+    localStorage.getItem("btc_stats") || "{}"
+  );
+
+  saved.date = TODAY;
+  saved.attempts = attempts;
+  saved.solved = solved;
+
+  localStorage.setItem("btc_stats", JSON.stringify(saved));
+}
+
+function showMessage(text, success) {
+  const message = document.getElementById("message");
+  message.textContent = text;
+  message.className = "message " + (success ? "success" : "error");
+}
+
+function checkCode() {
+  if (solved) return;
+
+  const guess = document.getElementById("guess").value;
+
+  if (!/^\d{3}$/.test(guess)) {
+    showMessage("Enter exactly three digits.", false);
+    return;
+  }
+
+  if (new Set(guess).size !== 3) {
+    showMessage("All three digits must be different.", false);
+    return;
+  }
+
+  attempts++;
+
+  document.getElementById("attempts").textContent = attempts;
+
+  if (guess === ANSWER) {
+    solved = true;
+
+    let saved = JSON.parse(
+      localStorage.getItem("btc_stats") || "{}"
+    );
+
+    saved.points = (saved.points || 0) + Math.max(
+      10, 100 - (attempts - 1) * 10
+    );
+
+    if (saved.lastDate !== TODAY) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      const yesterdayKey = yesterday.toLocaleDateString("en-CA");
+
+      saved.streak = saved.lastDate === yesterdayKey
+        ? (saved.streak || 0) + 1
+        : 1;
+
+      saved.lastDate = TODAY;
+    }
+
+    document.getElementById("points").textContent = saved.points;
+    document.getElementById("streak").textContent = saved.streak;
+
+    showMessage(
+      "🎉 VAULT UNLOCKED! You cracked the code in " +
+      attempts + " attempt(s)! You earned your points.",
+      true
+    );
+
+    document.getElementById("guess").disabled = true;
+    document.getElementById("submit").disabled = true;
+
+    localStorage.setItem("btc_stats", JSON.stringify(saved));
+  } else {
+    showMessage(
+      "❌ Incorrect combination. Re-examine the evidence and try again!",
+      false
+    );
+  }
+
+  saveStats();
+}
+
+function showHint() {
+  document.getElementById("hint").style.display = "block";
+  document.getElementById("hintButton").disabled = true;
+}
+
+function resetGame() {
+  if (solved) return;
+
+  attempts = 0;
+  document.getElementById("attempts").textContent = 0;
+  document.getElementById("guess").value = "";
+  document.getElementById("message").style.display = "none";
+  saveStats();
+}
+
+document.getElementById("guess").addEventListener("keydown", e => {
+  if (e.key === "Enter") checkCode();
+});
+
+loadStats();
+</script>
+
+</body>
+</html>
